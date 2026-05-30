@@ -191,7 +191,7 @@ export default function AdminAnalytics() {
             <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
               Smart Analytics Console
             </h1>
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-sky-600 bg-sky-50 dark:bg-sky-950/20 px-2 py-0.5 rounded uppercase tracking-wider">
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-600 bg-slate-50 dark:bg-slate-950/20 px-2 py-0.5 rounded uppercase tracking-wider">
               <BrainCircuit className="h-3 w-3 animate-pulse" /> Adaptive AI
             </span>
           </div>
@@ -203,7 +203,7 @@ export default function AdminAnalytics() {
 
       {loading ? (
         <div className="flex flex-col items-center justify-center py-32 gap-2 text-slate-400">
-          <svg className="animate-spin h-8 w-8 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin h-8 w-8 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
@@ -232,7 +232,7 @@ export default function AdminAnalytics() {
                   <TrendingUp className="h-3 w-3" /> Live Registrations
                 </span>
               </div>
-              <div className="p-4 bg-sky-50 dark:bg-sky-950/20 text-sky-500 rounded-2xl shadow-inner">
+              <div className="p-4 bg-slate-50 dark:bg-slate-950/20 text-slate-500 rounded-2xl shadow-inner">
                 <Users className="h-6 w-6" />
               </div>
             </div>
@@ -260,7 +260,7 @@ export default function AdminAnalytics() {
                 <span className="text-3xl font-black text-slate-900 dark:text-white mt-1 leading-none">
                   {fields.length}
                 </span>
-                <span className="text-[10px] text-sky-500 font-bold mt-2 flex items-center gap-0.5">
+                <span className="text-[10px] text-slate-500 font-bold mt-2 flex items-center gap-0.5">
                   <Sparkles className="h-3 w-3" /> Fully Dynamic
                 </span>
               </div>
@@ -277,7 +277,7 @@ export default function AdminAnalytics() {
             {/* Daily Registrations Line Chart (Col 8) */}
             <div className="lg:col-span-8 bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl p-6 shadow-xs">
               <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6 flex items-center gap-1.5">
-                <TrendingUp className="h-4 w-4 text-sky-500" /> Patient Registry Timeline
+                <TrendingUp className="h-4 w-4 text-slate-500" /> Patient Registry Timeline
               </h3>
               
               <div className="h-72 w-full">
@@ -311,7 +311,7 @@ export default function AdminAnalytics() {
             {/* Gender Distribution Pie Chart (Col 4) */}
             <div className="lg:col-span-4 bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl p-6 shadow-xs flex flex-col">
               <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-1.5">
-                <PieChartIcon className="h-4 w-4 text-sky-500" /> Gender Ratios
+                <PieChartIcon className="h-4 w-4 text-slate-500" /> Gender Ratios
               </h3>
 
               <div className="h-56 flex-1 w-full relative">
@@ -352,7 +352,7 @@ export default function AdminAnalytics() {
             {/* Age Demographics Bar Chart (Col 6) */}
             <div className="lg:col-span-6 bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl p-6 shadow-xs">
               <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6 flex items-center gap-1.5">
-                <BarChart4 className="h-4 w-4 text-sky-500" /> Patient Age Demographics
+                <BarChart4 className="h-4 w-4 text-slate-500" /> Patient Age Demographics
               </h3>
 
               <div className="h-70 w-full">
@@ -384,7 +384,7 @@ export default function AdminAnalytics() {
             {/* DYNAMIC AND DEDICATED FIELD ANALYZER TELEMETRY BLOCK (Col 6) */}
             <div className="lg:col-span-6 bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl p-6 shadow-xs flex flex-col">
               <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-1.5">
-                <BrainCircuit className="h-4 w-4 text-sky-500" /> Dynamic Field Telemetry Insights
+                <BrainCircuit className="h-4 w-4 text-slate-500" /> Dynamic Field Telemetry Insights
               </h3>
 
               <div className="flex-1 flex flex-col gap-6 max-h-[300px] overflow-y-auto pr-1">
@@ -399,7 +399,7 @@ export default function AdminAnalytics() {
                         <span className="font-extrabold text-xs text-slate-700 dark:text-slate-300">
                           {chart.fieldLabel} Distribution
                         </span>
-                        <span className="text-[9px] font-bold text-sky-500 uppercase bg-sky-50 dark:bg-sky-950/30 py-0.5 px-2 rounded">
+                        <span className="text-[9px] font-bold text-slate-500 uppercase bg-slate-50 dark:bg-slate-950/30 py-0.5 px-2 rounded">
                           {chart.type} Analysis
                         </span>
                       </div>

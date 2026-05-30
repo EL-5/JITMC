@@ -1,35 +1,41 @@
 @import "tailwindcss";
 
-/* 1. CORE STYLE VARIABLES */
+/* 1. CORE STYLE VARIABLES - Premium Light Mode */
 :root {
-  --background: #f8fafc; /* Slate 50 */
-  --foreground: #0f172a; /* Slate 900 */
+  --background: #f0f4f8; /* Cool Blue-Grey */
+  --foreground: #0d1f2d; /* Deep Navy */
   --card: #ffffff;
-  --card-foreground: #0f172a;
-  --border: #e2e8f0;
-  --primary: #0284c7; /* Sky 600 - Clean Medical Blue */
-  --primary-hover: #0369a1; /* Sky 700 */
-  --success: #10b981; /* Emerald 500 */
-  --warning: #f59e0b; /* Amber 500 */
-  --danger: #ef4444; /* Red 500 */
-  --muted: #64748b; /* Slate 500 */
-  --muted-background: #f1f5f9;
+  --card-foreground: #0d1f2d;
+  --border: #d1dce8;
+  --primary: #1a3a5c; /* Deep Royal Blue */
+  --primary-hover: #0d2540;
+  --primary-foreground: #ffffff;
+  --success: #059669;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --muted: #4a6580;
+  --muted-background: #e4ecf4;
+  --accent: #1a3a5c;
+  --accent-light: #e8f0fa;
 }
 
 /* 2. MANUAL DARK MODE CLASS DEFINITIONS */
 .dark {
-  --background: #0b0f19; /* Deep Healthcare Dark Blue */
-  --foreground: #f8fafc;
-  --card: #151d30; /* Darker navy card */
-  --card-foreground: #f8fafc;
-  --border: #1e293b;
-  --primary: #38bdf8; /* Sky 400 */
-  --primary-hover: #0ea5e9; /* Sky 500 */
+  --background: #080d14;
+  --foreground: #e8f0fa;
+  --card: #0f1824;
+  --card-foreground: #e8f0fa;
+  --border: #1a2d45;
+  --primary: #4d9de0; /* Sky Blue accent */
+  --primary-hover: #6cb4e8;
+  --primary-foreground: #080d14;
   --success: #34d399;
   --warning: #fbbf24;
   --danger: #f87171;
-  --muted: #94a3b8;
-  --muted-background: #1e293b;
+  --muted: #7fa8c9;
+  --muted-background: #111e2e;
+  --accent: #4d9de0;
+  --accent-light: #0d2540;
 }
 
 /* 3. BASE BODY FORMATTING */
@@ -82,7 +88,7 @@ body {
   font-weight: 600;
   border-radius: 0.75rem;
   background-color: var(--primary);
-  color: #ffffff;
+  color: var(--primary-foreground);
   transition: all 0.2s ease;
   cursor: pointer;
   border: none;

@@ -5,7 +5,7 @@ import {
   getLocalFields, 
   saveLocalFields, 
   deleteLocalField, 
-  FormField 
+  FormField,
 } from '@/lib/db';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { 
@@ -13,7 +13,7 @@ import {
   Trash2, 
   ArrowUp, 
   ArrowDown, 
-  Smartphone, 
+  Eye,
   Save, 
   X, 
   Edit2, 
@@ -258,7 +258,7 @@ export default function FormBuilder() {
           )}
           {saving && (
             <span className="inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 px-3 py-1.5">
-              <svg className="animate-spin h-4 w-4 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
@@ -290,7 +290,7 @@ export default function FormBuilder() {
 
             {loading ? (
               <div className="flex flex-col items-center justify-center py-12 gap-2 text-slate-400">
-                <svg className="animate-spin h-8 w-8 text-sky-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-8 w-8 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -314,7 +314,7 @@ export default function FormBuilder() {
                       transition={{ duration: 0.15 }}
                       className={`flex items-center justify-between p-4 rounded-xl border dark:border-slate-800 transition-all ${
                         editingField?.id === field.id
-                          ? 'border-sky-500 dark:border-sky-500 bg-sky-50/20 dark:bg-sky-950/10'
+                          ? 'border-slate-500 dark:border-slate-500 bg-slate-50/20 dark:bg-slate-950/10'
                           : 'bg-slate-50/50 hover:bg-slate-50 dark:bg-slate-900/50 dark:hover:bg-slate-900/80'
                       }`}
                     >
@@ -361,7 +361,7 @@ export default function FormBuilder() {
                         {/* Edit and Trash */}
                         <button
                           onClick={() => setEditingField(field)}
-                          className="p-1.5 rounded-lg hover:bg-sky-50 dark:hover:bg-sky-950/40 text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 cursor-pointer"
+                          className="p-1.5 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-950/40 text-slate-400 hover:text-slate-600 dark:hover:text-slate-400 cursor-pointer"
                           title="Edit label/type details"
                         >
                           <Edit2 className="h-4 w-4" />
@@ -393,7 +393,7 @@ export default function FormBuilder() {
               >
                 <div className="p-5 border-b dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900/40">
                   <span className="font-extrabold text-sm flex items-center gap-1.5">
-                    <FileEdit className="h-4 w-4 text-sky-500" /> Edit Field: {editingField.label}
+                    <FileEdit className="h-4 w-4 text-slate-500" /> Edit Field: {editingField.label}
                   </span>
                   <button 
                     onClick={() => setEditingField(null)}
@@ -446,7 +446,7 @@ export default function FormBuilder() {
                         id="checkbox-required-builder"
                         checked={editingField.required}
                         onChange={(e) => setEditingField({ ...editingField, required: e.target.checked })}
-                        className="h-4.5 w-4.5 rounded text-sky-500 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-sky-500"
+                        className="h-4.5 w-4.5 rounded text-slate-500 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-slate-500"
                       />
                       <label htmlFor="checkbox-required-builder" className="text-sm font-bold text-slate-700 dark:text-slate-300 cursor-pointer">
                         Mark field as Required
@@ -459,7 +459,7 @@ export default function FormBuilder() {
                     <div className="border dark:border-slate-800 rounded-xl p-4 bg-slate-50/50 dark:bg-slate-900/30 flex flex-col gap-3 mt-2">
                       <label className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
                         <span>Options Choice Lists</span>
-                        <span className="text-[10px] text-sky-500 font-bold lowercase">({editingField.options.length} options)</span>
+                        <span className="text-[10px] text-slate-500 font-bold lowercase">({editingField.options.length} options)</span>
                       </label>
 
                       {/* Options Chips */}
@@ -523,7 +523,7 @@ export default function FormBuilder() {
                     <button
                       type="button"
                       onClick={handleSaveEditedField}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-xs font-bold cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded-xl text-xs font-bold cursor-pointer"
                     >
                       <Save className="h-3.5 w-3.5" /> Save Changes
                     </button>
@@ -534,83 +534,93 @@ export default function FormBuilder() {
           </AnimatePresence>
         </div>
 
-        {/* RIGHT COMPONENT: Mobile Live Preview Simulator (Col 5) */}
+        {/* RIGHT COMPONENT: Live Form Preview (Col 5) */}
         <div className="xl:col-span-5 flex flex-col gap-4">
           <h2 className="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider flex items-center gap-1.5 pl-2">
-            <Smartphone className="h-4 w-4" /> Live Outreach Preview
+            <Eye className="h-4 w-4" /> Form Preview
           </h2>
 
-          {/* Interactive Simulator Shell */}
-          <div className="relative mx-auto w-full max-w-[340px] aspect-[9/18.5] bg-slate-900 dark:bg-slate-950 rounded-[40px] shadow-2xl p-3 border-[6px] border-slate-800 dark:border-slate-900 flex flex-col overflow-hidden">
-            
-            {/* Speaker & Camera Notch */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 h-5 w-32 bg-slate-800 rounded-b-xl z-20 flex items-center justify-center">
-              <div className="h-1 w-10 bg-slate-700 rounded-full" />
-              <div className="h-2 w-2 bg-slate-900 rounded-full ml-3" />
+          <div className="bg-white dark:bg-slate-900 border border-[#d1dce8] dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+            {/* Preview Header */}
+            <div className="px-5 py-4 border-b border-[#d1dce8] dark:border-slate-800 bg-[#1a3a5c] dark:bg-slate-800">
+              <h3 className="text-sm font-black text-white">Patient Intake Form</h3>
+              <p className="text-[10px] text-blue-200 mt-0.5">This is how the form appears to volunteers</p>
             </div>
 
-            {/* Screen Container */}
-            <div className="flex-1 bg-slate-50 dark:bg-slate-950 rounded-[30px] overflow-hidden flex flex-col relative border dark:border-slate-800 pt-5">
-              
-              {/* Fake Mobile Header bar */}
-              <div className="px-4 pt-1 pb-2 flex justify-between items-center text-[10px] font-bold text-slate-400">
-                <span>09:41</span>
-                <div className="flex items-center gap-1">
-                  <span className="w-2.5 h-1.5 bg-slate-400 rounded-xs" />
-                  <span className="w-3.5 h-2 bg-slate-400 rounded-xs" />
+            {/* Preview Fields */}
+            <div className="p-5 flex flex-col gap-5 max-h-[560px] overflow-y-auto">
+              {fields.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center gap-2">
+                  <SlidersHorizontal className="h-8 w-8 text-slate-300 dark:text-slate-700" />
+                  <p className="text-sm font-bold text-slate-400 dark:text-slate-600">No fields to preview</p>
+                  <p className="text-xs text-slate-400 dark:text-slate-600 opacity-70">Add fields using the panel on the left</p>
                 </div>
-              </div>
+              ) : (
+                fields.map((field, idx) => (
+                  <div key={field.id} className={`flex flex-col gap-1.5 ${idx > 0 ? 'pt-4 border-t border-[#e4ecf4] dark:border-slate-800' : ''}`}>
+                    <label className="text-xs font-bold text-[#0d1f2d] dark:text-slate-300 flex items-center gap-1">
+                      {field.label}
+                      {field.required && <span className="text-red-500 text-[10px]">*</span>}
+                      <span className="ml-auto text-[9px] font-bold text-[#4a6580] dark:text-slate-500 uppercase tracking-wider bg-[#e8f0fa] dark:bg-slate-800 px-1.5 py-0.5 rounded">{field.type}</span>
+                    </label>
 
-              {/* Scrollable Screen Content */}
-              <div className="flex-1 overflow-y-auto px-4 pb-6 flex flex-col gap-4">
-                
-                {/* Fake App header */}
-                <div className="border-b dark:border-slate-800 pb-2 mb-1 flex items-center gap-1.5">
-                  <span className="h-4 w-4 bg-sky-500 text-white rounded flex items-center justify-center font-bold text-[8px]">M</span>
-                  <span className="text-[10px] font-bold tracking-tight text-slate-700 dark:text-slate-300">Intake Form</span>
-                </div>
-
-                <span className="text-xs font-black text-slate-900 dark:text-white leading-none">Register Patient</span>
-
-                {/* Form Fields mapping preview */}
-                <div className="flex flex-col gap-3">
-                  {fields.map((field) => (
-                    <div key={field.id} className="flex flex-col gap-1">
-                      <label className="text-[9px] font-bold text-slate-500 dark:text-slate-400 flex items-center gap-0.5">
-                        {field.label}
-                        {field.required && <span className="text-red-500">*</span>}
-                      </label>
-
-                      {field.type === 'textarea' ? (
-                        <div className="w-full h-10 border dark:border-slate-800 bg-white dark:bg-slate-900 rounded-md text-[9px] px-2 py-1 text-slate-400 select-none">
-                          Notes...
-                        </div>
-                      ) : isChoicesType(field.type) ? (
-                        <div className="w-full h-7 border dark:border-slate-800 bg-white dark:bg-slate-900 rounded-md text-[9px] px-2 flex items-center justify-between text-slate-400 select-none">
-                          <span>{field.options[0] || 'Select choice...'}</span>
-                          <ChevronRight className="h-3 w-3 opacity-40 rotate-90" />
-                        </div>
-                      ) : (
-                        <div className="w-full h-7 border dark:border-slate-800 bg-white dark:bg-slate-900 rounded-md text-[9px] px-2 flex items-center text-slate-400 select-none">
-                          {field.type === 'date' ? 'YYYY-MM-DD' : `Enter ${field.label.toLowerCase()}...`}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Fake Submit button */}
-                <button
-                  type="button"
-                  className="w-full py-2 bg-sky-500 hover:bg-sky-600 text-white text-[10px] font-bold rounded-lg shadow-xs select-none"
-                >
-                  Save Patient Record
-                </button>
-              </div>
-
-              {/* Fake iPhone Bottom Bar */}
-              <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 h-1 w-24 bg-slate-300 dark:bg-slate-800 rounded-full" />
+                    {(field.type === 'text' || field.type === 'number' || field.type === 'date') && (
+                      <div className="w-full px-3 py-2.5 text-xs border border-[#d1dce8] dark:border-slate-700 rounded-lg bg-[#f0f4f8] dark:bg-slate-800 text-[#4a6580] dark:text-slate-500 italic">
+                        {field.type === 'date' ? 'mm/dd/yyyy' : `Enter ${field.label.toLowerCase()}...`}
+                      </div>
+                    )}
+                    {field.type === 'textarea' && (
+                      <div className="w-full px-3 py-2.5 text-xs border border-[#d1dce8] dark:border-slate-700 rounded-lg bg-[#f0f4f8] dark:bg-slate-800 text-[#4a6580] dark:text-slate-500 italic h-16">
+                        Add notes...
+                      </div>
+                    )}
+                    {field.type === 'select' && (
+                      <div className="w-full px-3 py-2.5 text-xs border border-[#d1dce8] dark:border-slate-700 rounded-lg bg-[#f0f4f8] dark:bg-slate-800 text-[#4a6580] dark:text-slate-500 flex justify-between items-center">
+                        <span className="italic">-- Choose Option --</span>
+                        <ChevronRight className="h-3 w-3 rotate-90" />
+                      </div>
+                    )}
+                    {field.type === 'radio' && (
+                      <div className="flex flex-wrap gap-3 py-1">
+                        {field.options.length === 0 
+                          ? <span className="text-[10px] text-slate-400 italic">No options yet</span>
+                          : field.options.map(opt => (
+                            <label key={opt} className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0d1f2d] dark:text-slate-300 cursor-default">
+                              <span className="w-3 h-3 rounded-full border border-[#1a3a5c] dark:border-slate-500 inline-block" />
+                              {opt}
+                            </label>
+                          ))
+                        }
+                      </div>
+                    )}
+                    {field.type === 'checkbox' && (
+                      <div className="flex flex-col gap-1.5 py-1">
+                        {field.options.length === 0 
+                          ? <span className="text-[10px] text-slate-400 italic">No options yet</span>
+                          : field.options.map(opt => (
+                            <label key={opt} className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0d1f2d] dark:text-slate-300 cursor-default">
+                              <span className="w-3 h-3 rounded border border-[#d1dce8] dark:border-slate-600 inline-block" />
+                              {opt}
+                            </label>
+                          ))
+                        }
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
             </div>
+
+            {/* Preview Footer */}
+            {fields.length > 0 && (
+              <div className="px-5 py-3 border-t border-[#d1dce8] dark:border-slate-800 bg-[#f0f4f8] dark:bg-slate-900/40 flex justify-between items-center">
+                <span className="text-[10px] font-bold text-[#4a6580] dark:text-slate-500">{fields.length} field{fields.length !== 1 ? 's' : ''} in form</span>
+                <a href="/"
+                  className="text-[10px] font-bold text-[#1a3a5c] dark:text-sky-400 hover:underline">
+                  Open live form →
+                </a>
+              </div>
+            )}
           </div>
         </div>
 
