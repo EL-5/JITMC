@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { getLocalSubmissions, getLocalFields, PatientSubmission, FormField, saveLocalSubmissions } from '@/lib/db';
+import { getLocalSubmissions, getLocalFields, PatientSubmission, FormField, saveLocalSubmissions, deleteLocalSubmission } from '@/lib/db';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSync } from '@/lib/SyncContext';
 import { 
@@ -18,7 +18,8 @@ import {
   X,
   FileCode,
   Calendar,
-  AlertCircle
+  AlertCircle,
+  Trash2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -60,6 +61,33 @@ export default function AdminDashboard() {
 
   // Sync state for pulling remote data
   const [pullingRemote, setPullingRemote] = useState(false);
+
+  // Deletion logic
+  const handleDeleteRecord = async (id: string) => {
+    if (!confirm('Are you sure you want to permanently delete this record? This action cannot be undone.')) return;
+
+    try {
+      // 1. Delete from Supabase if configured and online
+      if (isOnline && isSupabaseConfigured && supabase) {
+        const { error } = await supabase.from('submissions').delete().eq('id', id);
+        if (error) {
+          console.error("Failed to delete from remote DB:", error);
+          alert("Could not delete from cloud. Are you offline?");
+          return;
+        }
+      }
+
+      // 2. Delete locally
+      await deleteLocalSubmission(id);
+
+      // 3. Update state to reflect deletion immediately
+      setSubmissions((prev) => prev.filter((s) => s.id !== id));
+      setSelectedSubmission(null);
+    } catch (err) {
+      console.error("Error deleting record:", err);
+      alert("Error occurred while trying to delete the record.");
+    }
+  };
 
   // 1. Fetch Local Data and attempt to sync from Supabase if online
   const loadDashboardData = useCallback(async () => {
@@ -824,6 +852,13 @@ export default function AdminDashboard() {
                   className="medical-btn-primary flex-1 text-xs py-3 px-4 font-bold flex items-center justify-center gap-1.5"
                 >
                   <Printer className="h-4 w-4" /> Download Certified Report
+                </button>
+                <button
+                  onClick={() => handleDeleteRecord(selectedSubmission.id)}
+                  className="bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-900/20 dark:hover:bg-red-900/40 dark:text-red-400 py-3 px-4 font-bold flex items-center justify-center rounded-xl transition-colors"
+                  title="Delete Record"
+                >
+                  <Trash2 className="h-4 w-4" />
                 </button>
               </div>
 
