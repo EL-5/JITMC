@@ -310,9 +310,7 @@ export default function AdminDashboard() {
     // Map internal records object into readable Excel row layout
     return records.map((rec) => {
       const row: Record<string, string> = {
-        'Submission ID': rec.id,
-        'Registration Date': new Date(rec.created_at).toLocaleString(),
-        'Sync Status': rec.synced === 1 ? 'Synced' : 'Local Offline'
+        'Registration Date': new Date(rec.created_at).toLocaleString()
       };
 
       fields.forEach((field) => {
@@ -373,13 +371,12 @@ export default function AdminDashboard() {
     if (targetSet.length === 0) return alert('No records available to export.');
 
     const doc = new jsPDF({ orientation: 'landscape' });
-    const headers = ['Reg Date', ...fields.slice(0, 5).map((f) => f.label), 'Sync'];
+    const headers = ['Reg Date', ...fields.slice(0, 5).map((f) => f.label)];
 
     const data = targetSet.map((rec) => {
       const row = [
         new Date(rec.created_at).toLocaleDateString(),
-        ...fields.slice(0, 5).map((f) => String(rec[f.id] || '')),
-        rec.synced === 1 ? 'Synced' : 'Offline'
+        ...fields.slice(0, 5).map((f) => String(rec[f.id] || ''))
       ];
       return row;
     });
