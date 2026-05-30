@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+/* 1. CORE STYLE VARIABLES */
+:root {
+  --background: #f8fafc; /* Slate 50 */
+  --foreground: #0f172a; /* Slate 900 */
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --border: #e2e8f0;
+  --primary: #0284c7; /* Sky 600 - Clean Medical Blue */
+  --primary-hover: #0369a1; /* Sky 700 */
+  --primary-glow: rgba(2, 132, 199, 0.15);
+  --success: #10b981; /* Emerald 500 */
+  --warning: #f59e0b; /* Amber 500 */
+  --danger: #ef4444; /* Red 500 */
+  --muted: #64748b; /* Slate 500 */
+  --muted-background: #f1f5f9;
+}
+
+/* 2. MANUAL DARK MODE CLASS DEFINITIONS */
+.dark {
+  --background: #0b0f19; /* Deep Healthcare Dark Blue */
+  --foreground: #f8fafc;
+  --card: #151d30; /* Darker navy card */
+  --card-foreground: #f8fafc;
+  --border: #1e293b;
+  --primary: #38bdf8; /* Sky 400 */
+  --primary-hover: #0ea5e9; /* Sky 500 */
+  --primary-glow: rgba(56, 189, 248, 0.2);
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --muted: #94a3b8;
+  --muted-background: #1e293b;
+}
+
+/* 3. BASE BODY FORMATTING */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: inherit; /* Inter loaded via next/font/google on <html> */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* 4. PREMIUM UTILITY STYLING */
+.medical-card {
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  border-radius: 1rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.medical-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+}
+
+.medical-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  color: var(--card-foreground);
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.medical-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.medical-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  background-color: var(--primary);
+  color: #ffffff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.medical-btn-primary:hover {
+  background-color: var(--primary-hover);
+  transform: scale(1.02);
+}
+
+.medical-btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* 5. CUSTOM GLASSMORPHIC STYLING */
+.glass-nav {
+  backdrop-filter: blur(12px);
+  background-color: rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.3s ease;
+}
+
+.dark .glass-nav {
+  background-color: rgba(11, 15, 25, 0.8);
+}
+
+/* 6. BEAUTIFUL CUSTOM SCROLLBARS */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 9999px;
+  border: 2px solid var(--background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}

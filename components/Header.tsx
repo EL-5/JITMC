@@ -1,0 +1,140 @@
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useSync } from '@/lib/SyncContext';
+import { useTheme } from '@/lib/ThemeContext';
+import { 
+  Activity, 
+  Wifi, 
+  WifiOff, 
+  RefreshCw, 
+  Sun, 
+  Moon, 
+  LayoutDashboard, 
+  FileText,
+  Settings,
+  BarChart3
+} from 'lucide-react';
+
+export default function Header() {
+  const pathname = usePathname();
+  const { isOnline, isSyncing, pendingCount, triggerSync } = useSync();
+  const { theme, toggleTheme } = useTheme();
+
+  const handleSyncClick = async () => {
+    if (pendingCount > 0 && isOnline && !isSyncing) {
+      await triggerSync();
+    }
+  };
+
+  const navLinks = [
+    { label: 'Patient Form', href: '/', icon: FileText },
+    { label: 'Form Builder', href: '/admin/form-builder', icon: Settings },
+    { label: 'Records', href: '/admin/dashboard', icon: LayoutDashboard },
+    { label: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
+  ];
+
+  return (
+    <header className="sticky top-0 z-50 glass-nav shadow-xs">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-14 items-center gap-4">
+
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 group shrink-0">
+            <div className="p-1.5 bg-sky-500 text-white rounded-lg group-hover:rotate-12 transition-transform duration-300">
+              <Activity className="h-5 w-5" />
+            </div>
+            <span className="font-bold text-base sm:text-lg tracking-tight bg-gradient-to-r from-sky-600 to-indigo-600 dark:from-sky-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              MORS
+            </span>
+            <span className="hidden lg:inline-block text-xs font-medium text-slate-400 dark:text-slate-500 border-l border-slate-200 dark:border-slate-800 pl-3">
+              Medical Outreach Record System
+            </span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden sm:flex items-center gap-1 bg-slate-100 dark:bg-slate-900 p-1 rounded-xl">
+            {navLinks.map(({ label, href, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                  pathname === href
+                    ? 'bg-white dark:bg-slate-800 text-sky-600 dark:text-sky-400 shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <Icon className="h-4 w-4" />
+                <span>{label}</span>
+              </Link>
+            ))}
+          </nav>
+
+          {/* Right Controls */}
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Online/Offline Status */}
+            <div
+              className={`hidden xs:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold select-none ${
+                isOnline
+                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/50'
+                  : 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-900/50'
+              }`}
+            >
+              {isOnline ? (
+                <><Wifi className="h-3 w-3" /><span>Online</span></>
+              ) : (
+                <><WifiOff className="h-3 w-3 animate-pulse" /><span>Offline</span></>
+              )}
+            </div>
+
+            {/* Sync Button */}
+            {pendingCount > 0 && (
+              <button
+                onClick={handleSyncClick}
+                disabled={!isOnline || isSyncing}
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                  isOnline
+                    ? 'bg-sky-500 hover:bg-sky-600 text-white shadow-xs animate-bounce'
+                    : 'bg-slate-200 text-slate-400 dark:bg-slate-800 dark:text-slate-600 cursor-not-allowed'
+                }`}
+                title={isOnline ? 'Sync pending records to cloud' : 'Go online to sync'}
+              >
+                <RefreshCw className={`h-3 w-3 ${isSyncing ? 'animate-spin' : ''}`} />
+                <span>Sync ({pendingCount})</span>
+              </button>
+            )}
+
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors duration-200 cursor-pointer"
+              aria-label="Toggle Theme"
+            >
+              {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile bottom nav */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 glass-nav border-t shadow-lg py-1 px-2 flex justify-around">
+        {navLinks.map(({ label, href, icon: Icon }) => (
+          <Link
+            key={href}
+            href={href}
+            className={`flex flex-col items-center gap-0.5 py-1.5 px-2 rounded-lg text-xs font-bold transition-all duration-200 ${
+              pathname === href
+                ? 'text-sky-600 dark:text-sky-400'
+                : 'text-slate-500 dark:text-slate-400'
+            }`}
+          >
+            <Icon className="h-5 w-5" />
+            <span>{label}</span>
+          </Link>
+        ))}
+      </div>
+    </header>
+  );
+}
