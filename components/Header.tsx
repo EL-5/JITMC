@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSync } from '@/lib/SyncContext';
 import { 
-  Activity, 
   Wifi, 
   WifiOff, 
   RefreshCw, 
@@ -32,9 +31,6 @@ export default function Header() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group shrink-0">
-            <div className="p-1.5 bg-[#1a3a5c] dark:bg-sky-600 text-white rounded-lg group-hover:rotate-12 transition-transform duration-300">
-              <Activity className="h-5 w-5" />
-            </div>
             <span className="font-bold text-base sm:text-lg tracking-tight text-[#1a3a5c] dark:text-sky-400">
               JSC
             </span>

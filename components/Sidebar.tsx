@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
-  Activity, 
   LayoutDashboard, 
   FileText,
   Settings,
@@ -30,8 +29,8 @@ export default function Sidebar() {
       {/* SIDEBAR (Desktop) */}
       <aside className="hidden sm:flex flex-col w-64 bg-white dark:bg-slate-900 border-r dark:border-slate-800 shrink-0 min-h-screen sticky top-0">
         <div className="p-5 border-b border-[#d1dce8] dark:border-slate-800 flex items-center gap-3 bg-[#1a3a5c] dark:bg-slate-900">
-          <div className="p-1.5 bg-white/20 text-white rounded-lg">
-            <Activity className="h-5 w-5" />
+          <div className="relative h-12 w-12 overflow-hidden rounded-lg bg-white shadow-sm flex items-center justify-center">
+            <img src="/logo.jpeg" alt="JSC Logo" className="object-contain w-full h-full" />
           </div>
           <div>
             <h2 className="text-lg font-black text-white leading-none">
