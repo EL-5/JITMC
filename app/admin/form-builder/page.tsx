@@ -34,15 +34,46 @@ export default function FormBuilder() {
   const [saving, setSaving] = useState(false);
   const [syncStatus, setSyncStatus] = useState<'idle' | 'success' | 'failed'>('idle');
 
-  // Load fields on mount
+  // Load fields on mount — always pull from Supabase first so all users
+  // see the same form configuration regardless of their local cache.
   useEffect(() => {
     const loadFields = async () => {
       setLoading(true);
       try {
+        if (isSupabaseConfigured && supabase) {
+          const { data, error } = await supabase
+            .from('form_fields')
+            .select('*')
+            .order('sort_order', { ascending: true });
+
+          if (!error && data && data.length > 0) {
+            const mapped = data.map((f: {
+              id: string; label: string; type: string;
+              required: boolean; options: string[]; sort_order: number;
+            }) => ({
+              id: f.id,
+              label: f.label,
+              type: f.type as FormField['type'],
+              required: f.required,
+              options: f.options || [],
+              sort_order: f.sort_order || 0,
+            }));
+            // Update local cache and state
+            await saveLocalFields(mapped);
+            setFields(mapped);
+            return;
+          }
+        }
+        // Fallback: local IndexedDB (offline mode)
         const localFields = await getLocalFields();
         setFields(localFields);
       } catch (e) {
         console.error('Failed to load fields:', e);
+        // Last-resort fallback
+        try {
+          const localFields = await getLocalFields();
+          setFields(localFields);
+        } catch (_) {}
       } finally {
         setLoading(false);
       }

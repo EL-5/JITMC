@@ -4,14 +4,11 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSync } from '@/lib/SyncContext';
-import { useTheme } from '@/lib/ThemeContext';
 import { 
   Activity, 
   Wifi, 
   WifiOff, 
   RefreshCw, 
-  Sun, 
-  Moon, 
   LayoutDashboard, 
   FileText,
   Settings,
@@ -21,7 +18,6 @@ import {
 export default function Header() {
   const pathname = usePathname();
   const { isOnline, isSyncing, pendingCount, triggerSync } = useSync();
-  const { theme, toggleTheme } = useTheme();
 
   const handleSyncClick = async () => {
     if (pendingCount > 0 && isOnline && !isSyncing) {
@@ -82,15 +78,6 @@ export default function Header() {
                 <span>Sync ({pendingCount})</span>
               </button>
             )}
-
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors duration-200 cursor-pointer"
-              aria-label="Toggle Theme"
-            >
-              {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-            </button>
           </div>
         </div>
       </div>

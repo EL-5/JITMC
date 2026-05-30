@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getLocalFields, saveLocalSubmission, getLocalSubmissions, FormField, PatientSubmission } from '@/lib/db';
+import { getLocalFields, saveLocalSubmission, getLocalSubmissions, saveLocalSubmissions, FormField, PatientSubmission } from '@/lib/db';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSync } from '@/lib/SyncContext';
 import { 
   ClipboardCopy, 
@@ -17,7 +18,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function PatientRegistration() {
-  const { isOnline, triggerSync } = useSync();
+  const { isOnline, triggerSync, syncFields } = useSync();
   const [fields, setFields] = useState<FormField[]>([]);
   const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -35,8 +36,10 @@ export default function PatientRegistration() {
     const loadData = async () => {
       setLoading(true);
       try {
-        const localFields = await getLocalFields();
-        setFields(localFields);
+        // Always pull latest form fields from Supabase so changes made in the
+        // form builder by any user are immediately reflected here.
+        const latestFields = await syncFields();
+        setFields(latestFields);
 
         const savedDraft = localStorage.getItem('mors-patient-draft');
         if (savedDraft) {
@@ -47,10 +50,46 @@ export default function PatientRegistration() {
           }
         }
 
-        // Load recent submissions for the feed
-        const subs = await getLocalSubmissions();
-        const sorted = subs.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-        setRecentSubmissions(sorted.slice(0, 8));
+        // Load local submissions first for instant display
+        const localSubs = await getLocalSubmissions();
+        const localSorted = localSubs.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        setRecentSubmissions(localSorted.slice(0, 8));
+
+        // If online, pull all submissions from Supabase so records from other
+        // users/devices are visible in the live feed.
+        if (isOnline && isSupabaseConfigured && supabase) {
+          try {
+            const { data: subData, error: subError } = await supabase
+              .from('submissions')
+              .select('*')
+              .order('created_at', { ascending: false })
+              .limit(50);
+
+            if (!subError && subData && subData.length > 0) {
+              const { data: valData } = await supabase
+                .from('submission_values')
+                .select('*');
+
+              const remoteSubmissions: PatientSubmission[] = subData.map((s: Record<string, string>) => {
+                const valuesMap: Record<string, string> = {};
+                (valData || [])
+                  .filter((v: Record<string, string>) => v.submission_id === s.id)
+                  .forEach((v: Record<string, string>) => {
+                    valuesMap[v.field_id] = v.value;
+                  });
+                return { id: s.id, created_at: s.created_at, values: valuesMap, synced: 1 };
+              });
+
+              // Merge remote into local cache
+              await saveLocalSubmissions(remoteSubmissions);
+              const freshSubs = await getLocalSubmissions();
+              const sorted = freshSubs.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+              setRecentSubmissions(sorted.slice(0, 8));
+            }
+          } catch (remoteErr) {
+            console.warn('Could not pull remote submissions for feed:', remoteErr);
+          }
+        }
       } catch (err) {
         console.error('Failed to load page config:', err);
       } finally {
@@ -59,17 +98,37 @@ export default function PatientRegistration() {
     };
     loadData();
 
-    // Poll submissions every 5s to keep feed live
+    // Poll Supabase every 10s to keep the live feed up-to-date across users
     const interval = setInterval(async () => {
       try {
+        if (isOnline && isSupabaseConfigured && supabase) {
+          const { data: subData, error } = await supabase
+            .from('submissions')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(50);
+
+          if (!error && subData && subData.length > 0) {
+            const { data: valData } = await supabase.from('submission_values').select('*');
+            const remoteSubmissions: PatientSubmission[] = subData.map((s: Record<string, string>) => {
+              const valuesMap: Record<string, string> = {};
+              (valData || [])
+                .filter((v: Record<string, string>) => v.submission_id === s.id)
+                .forEach((v: Record<string, string>) => { valuesMap[v.field_id] = v.value; });
+              return { id: s.id, created_at: s.created_at, values: valuesMap, synced: 1 };
+            });
+            await saveLocalSubmissions(remoteSubmissions);
+          }
+        }
         const subs = await getLocalSubmissions();
         const sorted = subs.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
         setRecentSubmissions(sorted.slice(0, 8));
       } catch (_) {}
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(interval);
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOnline]);
 
   const handleInputChange = (fieldId: string, value: string) => {
     const newValues = { ...formValues, [fieldId]: value };

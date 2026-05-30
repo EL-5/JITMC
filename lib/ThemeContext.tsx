@@ -1,8 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, ReactNode } from 'react';
 
-type Theme = 'light' | 'dark';
+type Theme = 'dark';
 
 interface ThemeContextType {
   theme: Theme;
@@ -12,49 +12,21 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>('light');
-
-  // Define applyTheme first (hoisting safety)
-  const applyTheme = (t: Theme) => {
-    if (typeof window === 'undefined') return;
-    const root = window.document.documentElement;
-    if (t === 'dark') {
-      root.classList.add('dark');
-      root.style.colorScheme = 'dark';
-    } else {
-      root.classList.remove('dark');
-      root.style.colorScheme = 'light';
-    }
-  };
-
-  // Load from localStorage on mount
+  // Always dark — apply on mount and never allow switching
   useEffect(() => {
     if (typeof window === 'undefined') return;
-
-    const savedTheme = localStorage.getItem('mors-theme') as Theme | null;
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    // Defer state update to satisfy 'react-hooks/set-state-in-effect'
-    setTimeout(() => {
-      if (savedTheme) {
-        setTheme(savedTheme);
-        applyTheme(savedTheme);
-      } else if (systemPrefersDark) {
-        setTheme('dark');
-        applyTheme('dark');
-      }
-    }, 0);
+    const root = window.document.documentElement;
+    root.classList.add('dark');
+    root.style.colorScheme = 'dark';
+    // Clear any saved light-mode preference from previous sessions
+    localStorage.removeItem('mors-theme');
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('mors-theme', newTheme);
-    applyTheme(newTheme);
-  };
+  // No-op: kept so any existing useTheme() calls don't break
+  const toggleTheme = () => {};
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme: 'dark', toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
